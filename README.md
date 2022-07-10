@@ -5,7 +5,7 @@ This app helps you and your family keep track of expenses. It allows users to en
 ## Installation
 You will need Android Studio installed on your machine.
 ```sh
-git clone
+git clone https://github.com/joel122002/Budget-App-Android.git
 ```
 After cloning you can open this folder in android studio. In the root directory you have to create a file named `local.properties` (if it does not exist) and add the following variables to the file (do not erase existing contents of the file if it exists by default)
 
