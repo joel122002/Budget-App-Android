@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_marginEnd="10dp">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayoutNewItemName"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        app:boxStrokeWidth="2dp"
+        app:hintTextAppearance="@style/MyHintStyle"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextInputEditTextNewItemName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textCursorDrawable="@drawable/color_cusor"
+            android:hint="Item"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="textCapSentences"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/TextInputLayoutNewPrice"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        app:boxStrokeWidth="2dp"
+        app:hintTextAppearance="@style/MyHintStyle"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/TextInputEditTextNewPrice"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textCursorDrawable="@drawable/color_cusor"
+            android:hint="Price"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="textCapSentences"
+            android:textColor="#ffffff"
+            android:textColorHint="#ffffff" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/imgcheck"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.5"
+        app:srcCompat="@drawable/check_vector" />
+</LinearLayout>
