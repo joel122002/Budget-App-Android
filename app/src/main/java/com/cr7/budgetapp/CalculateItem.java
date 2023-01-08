@@ -251,7 +251,7 @@ public class CalculateItem extends AppCompatActivity implements View.OnClickList
                                         // Adding that entry to the Excel sheet of the current user
                                         Item item =
                                                 new Item(dateConverter.DateToDays((Date) parseObject1.get("Date")), parseObject1.get("ItemName").toString(), Integer.parseInt(parseObject1.get("Price").toString()));
-                                        Row row = sheetAllUsers.createRow(++rowNumCurrentUser);
+                                        Row row = sheetCurrentUser.createRow(++rowNumCurrentUser);
                                         row.createCell(0).setCellValue(dateSlashMonthSlashYear.format(dateConverter.DaysToDate(item.getDate())));
                                         row.createCell(1).setCellValue(item.getItem());
                                         row.createCell(2).setCellValue(item.getPrice());

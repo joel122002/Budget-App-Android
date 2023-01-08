@@ -70,6 +70,7 @@ public class User extends Fragment implements View.OnClickListener,
     private SQLiteDatabase database;
     private ConstraintLayout rootLayout;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private int semaphore = 0;
 
     public User() {
         // Required empty public constructor
@@ -297,6 +298,13 @@ public class User extends Fragment implements View.OnClickListener,
         doAllDatabaseTasks();
     }
 
+    private void decrementSemaphore() {
+        semaphore -= 1;
+        if (semaphore == 0) {
+            getData(from);
+        }
+    }
+
     // Does the task of getting all item and also syncs the local database to the server
     private void doAllDatabaseTasks() {
         getData(from);
@@ -335,6 +343,8 @@ public class User extends Fragment implements View.OnClickListener,
     // the local database and not in the server
     private void uploadUnfinishedItemsData() {
         List<Item> items = database.getToUploadItems();
+        semaphore += items.size();
+        Log.i("sema", semaphore+"");
         for (final Item item : items) {
             if (item.getObjectId() == null) {
                 final ParseObject parseObject = new ParseObject("Items");
@@ -347,11 +357,11 @@ public class User extends Fragment implements View.OnClickListener,
                     public void done(ParseException e) {
                         item.setObjectId(parseObject.getObjectId());
                         database.moveToMain(item);
+                        decrementSemaphore(); Log.i("sema", semaphore + "");
                     }
                 });
             } else {
                 final ParseQuery<ParseObject> query = ParseQuery.getQuery("Items");
-
                 query.getInBackground(item.getObjectId(), new GetCallback<ParseObject>() {
                     public void done(ParseObject object, ParseException e) {
                         if (e == null) {
@@ -363,8 +373,11 @@ public class User extends Fragment implements View.OnClickListener,
                                     if (e == null) {
                                         database.moveToMain(item);
                                     }
+                                    decrementSemaphore(); Log.i("sema", semaphore + "");
                                 }
                             });
+                        } else {
+                            decrementSemaphore(); Log.i("sema", semaphore + "");
                         }
                     }
                 });
@@ -429,7 +442,8 @@ public class User extends Fragment implements View.OnClickListener,
                     // Now we finally remove the objectIds of these items(whose objectId exist in
                     // the local database but not in the server)
                     database.deleteObjectIdFromItemInUploadTable(uncommonElementsBetweenServerAndUploadTable);
-                    getData(from);
+                    if (semaphore == 0)
+                        getData(from);
                     if (swipeRefreshLayout.isRefreshing())
                         swipeRefreshLayout.setRefreshing(false);
                 }
@@ -440,6 +454,8 @@ public class User extends Fragment implements View.OnClickListener,
     // Deleting items from the server that have been deleted from the local database
     private void deleteItemsToBeDeletedFromServer() {
         List<Item> items = database.getItemsToDelete();
+        semaphore += items.size();
+        Log.i("sema", semaphore+"");
         for (final Item item : items) {
             if (item.getObjectId() != null) {
                 ParseQuery<ParseObject> parseQueryDelete = new ParseQuery<ParseObject>("Items");
@@ -457,16 +473,19 @@ public class User extends Fragment implements View.OnClickListener,
                                         FancyToast.makeText(getContext(), e.getMessage(),
                                                 FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
                                     }
+                                    decrementSemaphore(); Log.i("sema", semaphore + "");
                                 }
                             });
                         } else {
                             FancyToast.makeText(getContext(), e.getMessage(),
                                     FancyToast.LENGTH_LONG, FancyToast.ERROR, false).show();
+                            decrementSemaphore(); Log.i("sema", semaphore + "");
                         }
                     }
                 });
             } else {
                 database.deleteItemFromToDeleteTable(item);
+                decrementSemaphore(); Log.i("sema", semaphore + "");
             }
         }
     }
